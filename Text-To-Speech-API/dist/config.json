@@ -1,0 +1,7 @@
+{
+    "host": "0.0.0.0",
+    "port": 5000,
+    "default_lang": "vi",
+    "ssl_cert": "cert.pem",
+    "ssl_key": "key.pem"
+}

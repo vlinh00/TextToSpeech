@@ -1,0 +1,8 @@
+Metadata-Version: 2.1
+Name: text_to_speech_lib
+Version: 0.1
+Summary: A library for converting text to speech and returning audio as base64 encoded strings.
+Home-page: https://192.168.1.44
+Author: Le Linh
+Author-email: your.email@example.com
+Requires-Dist: gTTS

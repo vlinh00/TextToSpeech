@@ -1,0 +1,58 @@
+﻿@page "/tts"
+@using System.Text
+@using Microsoft.JSInterop;
+@inject IJSRuntime JS
+
+<PageTitle>Text-to-speech</PageTitle>
+
+
+<h4>Nhập chuỗi:</h4>
+<input type="text" class="border-dark" placeholder="Enter a text" @bind = "inputText"/>
+
+<button class="btn btn-primary" @onclick="ConvertTextToSpeech">Phát loa</button>
+
+
+@if (!string.IsNullOrEmpty(audioUrl))
+{
+    <audio controls autoplay style="
+    width: 100%; 
+    margin-top: 10px;
+">
+        <source src="@audioUrl" type="audio/wav">
+        Trình duyệt của bạn không hỗ trợ phát âm thanh.
+    </audio>
+    audioUrl = string.Empty;
+}
+
+ 
+@code {
+    private string inputText = string.Empty;
+    private string audioUrl;
+
+
+    [Inject]
+    private HttpClient Http { get; set; }
+
+    private async Task ConvertTextToSpeech()
+    {
+        if (!string.IsNullOrWhiteSpace(inputText))
+        {
+            var content = new { text = inputText };
+
+            var response = await Http.PostAsJsonAsync("http://192.168.1.44:5000/tts", content);
+
+            if (response.IsSuccessStatusCode)
+            {
+                var result = await response.Content.ReadFromJsonAsync<Dictionary<string, string>>();
+                if (result != null && result.TryGetValue("base64_audio", out var base64Audio))
+                {
+                    audioUrl = $"data:audio/wav;base64,{base64Audio}";
+                }              
+
+            }
+        }
+    }
+}
+
+
+ 

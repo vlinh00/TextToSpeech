@@ -1,0 +1,1 @@
+from .tts import text_to_speech_vietnamese, text_to_speech
